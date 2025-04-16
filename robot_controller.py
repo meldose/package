@@ -66,12 +66,10 @@ class RobotController:
             "azimuth": 0.0
         }
         self.robot.move_linear_from_current_position(**linear_property)
-        #time.sleep(2)
         io_set = self.robot.set_tool_digital_outputs([1.0,0.0,0.0])
         time.sleep(1)
         self.robot.move_joint("New_capture")
         self.robot.move_joint("P50")
-        # self.robot.move_joint("P51")
         self.robot.move_joint("P57")
         io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0]) # open
         self.robot.move_joint("New_capture")

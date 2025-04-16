@@ -3,10 +3,6 @@ import numpy as np # imported numpy module
 import cv2 # imported cv2 module
 import pyrealsense2 as rs # imported pyrealsense
 import time
-<<<<<<< HEAD
-=======
-
->>>>>>> 10695235600ad26e938f503ff49184a841ad115c
 
 class ObjectDetector:
     def __init__(self, calibration_matrix_path):
@@ -139,7 +135,7 @@ class ObjectDetector:
             }
 
         print("[ObjectDetector] No object detected after retries.")
-        return None
+        return angle
 
     def _show_no_object(self, image, show=True):
         if show and image is not None:
@@ -155,11 +151,5 @@ class ObjectDetector:
     def get_focal_length(self):
         return self.intrinsics.fx  # Can also return (fx + fy) / 2 if needed
 
-<<<<<<< HEAD
-=======
-    # def __del__(self):
-    #     self.release()
-
->>>>>>> 10695235600ad26e938f503ff49184a841ad115c
     def release(self):
         self.pipeline.stop()
