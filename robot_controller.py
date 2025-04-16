@@ -74,7 +74,7 @@ class RobotController:
         self.robot.move_joint("P50")
         self.robot.move_joint("P57")
 
-    def move_robot_based_on_angle(self,yaw_deg):
+    def move_robot_based_on_angle(self,yaw_rad):
         # calibration_matrix = r"/home/hrg/Documents/package_detection/cam_to_tcp_transform.npy"
         # detector=ObjectDetector(calibration_matrix)
         # robot_control=RobotController()
@@ -87,7 +87,7 @@ class RobotController:
         # base_coords=T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom
         # target_pose=[base_coords[0],base_coords[1],base_coords[2],0,np.pi,yaw_rad]
 
-        if yaw_deg == 0 or yaw_deg == 360:
+        if yaw_rad ==0:
 
             self.robot.move_joint([0.18229699489025253,
             -0.45074154634338454,
@@ -97,7 +97,18 @@ class RobotController:
             0.7935212814262113,
             0.0006595128791383861]
             )
-        elif yaw_deg == 90 or yaw_deg == 180:
+
+        elif yaw_rad >=1.5708:
+
+            self.robot.move_joint([0.18229699489025253,
+            -0.45074154634338454,
+            0.36958859562606833,
+            -0.001521776648733053,
+            0.6085402412020895,
+            0.7935212814262113,
+            0.0006595128791383861]
+            )
+        elif yaw_rad <=-1.5708:
 
             self.robot.move_joint([-1.1864124246453485,
                 0.6649982733787552,
@@ -106,7 +117,27 @@ class RobotController:
                 1.6769492204432905,
                 -1.555638154824762]
                 )
+            
+        elif yaw_rad >=3.14159:
 
+            self.robot.move_joint([-1.1864124246453485,
+                0.6649982733787552,
+                0.8029329569691264,
+                -0.00040783815381041584,
+                1.6769492204432905,
+                -1.555638154824762]
+                )
+            
+        elif yaw_rad <=-3.14159:
+
+            self.robot.move_joint([-1.1864124246453485,
+                0.6649982733787552,
+                0.8029329569691264,
+                -0.00040783815381041584,
+                1.6769492204432905,
+                -1.555638154824762]
+                )
+            
         io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0]) # open
         self.robot.move_joint("New_capture")
         self.robot.stop()

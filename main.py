@@ -36,11 +36,11 @@ def main():
 
             yaw_rad=np.deg2rad(detection["orientation_deg"])
             print(yaw_rad)
+
             target_pose=[base_coords[0],base_coords[1],base_coords[2],0,np.pi,yaw_rad]
             # yaw_deg = np.rad2deg(detection["orientation_deg"])
             yaw_deg = np.rad2deg(yaw_rad)
             print(yaw_deg)
-            # yaw_deg=yaw_rad
             print(target_pose)
             print("[TARGET POSE]",target_pose)
 
@@ -55,7 +55,7 @@ def main():
 
             print("STARTING THE ROBOT")
 
-            robot_control.move_robot_based_on_angle(yaw_deg=np.deg2rad(detection["orientation_deg"]))
+            robot_control.move_robot_based_on_angle(yaw_rad=np.deg2rad(detection["orientation_deg"]))
 
             print("FINISHED ::::::::::::::::::::")
 
