@@ -85,16 +85,6 @@ class ObjectDetector:
             # Transform the camera coordinates to the robot's TCP frame
             position_tcp = self.T_cam_to_tcp @ xyz_camera
 
-            if self.visualize:
-                debug_image = color_image.copy()
-                cv2.drawContours(debug_image, [valid_contour], -1, (0, 255, 0), 2)
-                cv2.circle(debug_image, (center_x, center_y), 5, (0, 0, 255), -1)
-                cv2.putText(debug_image, f"Depth: {depth_value:.3f}m", (center_x + 10, center_y),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-                cv2.imshow("Detection", debug_image)
-                cv2.imshow("Depth Image", depth_colormap)
-                cv2.waitKey(1)
-
             return {
                 "pixel": (center_x, center_y),
                 "position_camera": xyz_camera[:3],  # 3D coordinates in camera space
@@ -121,9 +111,6 @@ class ObjectDetector:
 
     def get_focal_length(self):
         return self.intrinsics.fx  # Can also return (fx + fy) / 2 if needed
-
-    def __del__(self):
-        self.release()
 
     def release(self):
         self.pipeline.stop()

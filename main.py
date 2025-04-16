@@ -32,7 +32,7 @@ def main():
             # Get current TCP pose and transform detection into base coordinates
             tcp_pose_current = robot_control.robot.get_tcp_pose()
             print(tcp_pose_current)
-            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.087)
+            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.089)
             print(T_tcp_to_base)
             pos_cam_hom = np.array([*detection["position_camera"], 1])
             base_coords = T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom
