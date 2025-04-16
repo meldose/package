@@ -4,6 +4,7 @@ import cv2 # imported cv2 module
 import pyrealsense2 as rs # imported pyrealsense
 import time
 
+
 class ObjectDetector:
     def __init__(self, calibration_matrix_path):
         self.T_cam_to_tcp = np.load(calibration_matrix_path)
@@ -14,6 +15,7 @@ class ObjectDetector:
         self.profile = self.pipeline.start(cfg)
         self.intrinsics = self.profile.get_stream(rs.stream.color).as_video_stream_profile().get_intrinsics()
         self.align = rs.align(rs.stream.color)
+
 
     def get_detection(self): # created function for getting object detection
         frames = self.pipeline.wait_for_frames() # settung up the frames
