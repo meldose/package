@@ -67,12 +67,14 @@ class RobotController: # define the class
         }
         self.robot.move_linear_from_current_position(**linear_property) # move to the desired pose
         io_set = self.robot.set_tool_digital_outputs([1.0,0.0,0.0]) # set the tool digital outputs
+        print(io_set)
         time.sleep(1) # set the time
         self.robot.move_joint("New_capture") # move to the capture position
         # self.robot.move_joint("P49") # move to the P30 position
         self.robot.move_joint("P50")
         self.robot.move_joint("P57")
         io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0]) # set the tool digital outputs
+        print(io_set)
         self.robot.move_joint("New_capture") # move to the capture position
         self.robot.stop() # stop the robot
 
