@@ -28,14 +28,18 @@ def main():
 
             # Obtain current TCP pose
             tcp_pose_current=robot_control.robot.get_tcp_pose()
+
             T_tcp_to_base=robot_control.pose_to_matrix(tcp_pose_current,gripper_offset_z=-0.087) # adjusting the offset for the gripper
 
             pos_cam_hom=np.array([*detection["position_camera"],1])
             base_coords=T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom
 
             yaw_rad=np.deg2rad(detection["orientation_deg"])
-
+            print(yaw_rad)
             target_pose=[base_coords[0],base_coords[1],base_coords[2],0,np.pi,yaw_rad]
+            yaw_deg = np.rad2deg(detection["orientation_deg"])
+            print(yaw_deg)
+            print(target_pose)
             print("[TARGET POSE]",target_pose)
 
             
@@ -46,6 +50,8 @@ def main():
                 break
             
             robot_control.move_to_pose(target_pose,speed=0.2)
+
+            robot_control.move_robot_based_on_angle(yaw_rad=np.deg2rad(detection["orientation_deg"]))
 
     except Exception as ex:
         print("[ERROR]",ex)
