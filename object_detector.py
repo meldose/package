@@ -1,7 +1,7 @@
-import numpy as np # importing numpy 
-import cv2 # importing cv2 module
-import pyrealsense2 as rs # importing pyrealsense 
-import time # importing time module 
+import numpy as np
+import cv2
+import pyrealsense2 as rs
+import time
 
 class ObjectDetector:
     def __init__(self, calibration_matrix_path):
@@ -34,6 +34,14 @@ class ObjectDetector:
 
             color_image = np.asanyarray(color_frame.get_data())
             self.latest_color_image = color_image
+
+            # Convert depth frame to numpy array and normalize
+            depth_image_raw = np.asanyarray(depth_frame.get_data())
+            depth_colormap = cv2.convertScaleAbs(depth_image_raw, alpha=0.03)
+
+            # Optional: Show depth image
+            cv2.imshow("Depth Image", depth_colormap)
+            cv2.waitKey(1)
 
             gray = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
             _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -69,10 +77,10 @@ class ObjectDetector:
                 "orientation_deg": angle,
                 "color_image": color_image,
                 "depth_frame": depth_frame,
+                "depth_image": depth_colormap  # Added normalized depth image
             }
             return detection
 
-        # After retries
         print("[ObjectDetector] No object detected after retries.")
         return None
 
@@ -88,11 +96,13 @@ class ObjectDetector:
     def get_last_color_image(self):
         return self.latest_color_image
 
-    
     def __del__(self):
         self.release()
 
     def release(self):
-        self.pipeline.stop()
+        try:
+            self.pipeline.stop()
+        except Exception as e:
+            print(f"[ObjectDetector] Error during release: {e}")
         cv2.destroyAllWindows()
 
