@@ -1,4 +1,3 @@
-# robot_controller.py
 import numpy as np # importing numpy module
 from neurapy.robot import Robot 
 from scipy.spatial.transform import Rotation as R # importing rotation module
