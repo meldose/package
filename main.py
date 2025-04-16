@@ -64,7 +64,7 @@ def main():
                 no_detection_count = 0
 
             tcp_pose_current = robot_control.robot.get_tcp_pose()
-            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.091)
+            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.09099)
 
             pos_cam_hom = np.array([*detection["position_camera"], 1])
             base_coords = T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom
@@ -101,13 +101,9 @@ def main():
                 # Use depth from position_camera[2]
                 try:
                     depth = detection["position_camera"][2]
-                    if depth <= 0 or np.isnan(depth):
-                        raise ValueError("Invalid depth value.")
-
-                    fx, fy = detector.intrinsics.fx, detector.intrinsics.fy
-                    width_m = width_px * depth / fx
-                    height_m = height_px * depth / fy
-
+                    focal_length = detector.get_focal_length()  # Must exist in ObjectDetector
+                    width_m = width_px * depth / focal_length
+                    height_m = height_px * depth / focal_length
                     cv2.putText(img, f"Size: {round(width_m, 3)}x{round(height_m, 3)} m", (10, 120),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                 except Exception as e:
