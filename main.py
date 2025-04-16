@@ -81,9 +81,19 @@ def main():
             if img is not None:
                 pixel = detection["pixel"]
                 px, py = pixel
-                box_size = 40
-                top_left = (px - box_size // 2, py - box_size // 2)
-                bottom_right = (px + box_size // 2, py + box_size // 2)
+
+                # Dynamically calculate the bounding box size based on the object's pixel dimensions
+                width_px = detection.get("bbox_width", 40)  # Default width if not provided
+                height_px = detection.get("bbox_height", 40)  # Default height if not provided
+
+                # Adjust the box size for better visibility
+                scale_factor = 1  # You can adjust this if you want the box to be larger or smaller
+                width_px = int(width_px * scale_factor)
+                height_px = int(height_px * scale_factor)
+
+                # Top-left and bottom-right coordinates for the bounding box
+                top_left = (px - width_px // 2, py - height_px // 2)
+                bottom_right = (px + width_px // 2, py + height_px // 2)
 
                 cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 2)
                 cv2.putText(img, "Detected", (top_left[0], top_left[1] - 10),
@@ -94,18 +104,18 @@ def main():
                 cv2.putText(img, f"Angle: {round(detection['orientation_deg'], 1)}°", (10, 60),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
-                width_px = bottom_right[0] - top_left[0]
-                height_px = bottom_right[1] - top_left[1]
+                width_px_real = bottom_right[0] - top_left[0]
+                height_px_real = bottom_right[1] - top_left[1]
 
-                cv2.putText(img, f"Size: {width_px}x{height_px} px", (10, 90),
+                cv2.putText(img, f"Size: {width_px_real}x{height_px_real} px", (10, 90),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
                 # Use depth from position_camera[2] for size estimation
                 try:
                     depth = detection["position_camera"][2]
                     focal_length = detector.get_focal_length()  # Must exist in ObjectDetector
-                    width_m = width_px * depth / focal_length
-                    height_m = height_px * depth / focal_length
+                    width_m = width_px_real * depth / focal_length
+                    height_m = height_px_real * depth / focal_length
                     cv2.putText(img, f"Size: {round(width_m, 3)}x{round(height_m, 3)} m", (10, 120),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                 except Exception as e:
