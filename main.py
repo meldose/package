@@ -23,8 +23,7 @@ def main():
     r = Robot()
     r.set_mode("Automatic")
     r.move_joint("New_capture")
-
-    calibration_matrix = r"/home/hrg/Desktop/package_detection/cam_to_tcp_transform.npy"
+    calibration_matrix = (r"/home/hrg/Desktop/package/cam_to_tcp_transform.npy")
     if not os.path.exists(calibration_matrix):
         logging.error("Calibration matrix not found at: %s", calibration_matrix)
         raise FileNotFoundError(f"[ERROR] Calibration matrix not found at: {calibration_matrix}")
