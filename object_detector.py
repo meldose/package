@@ -2,6 +2,7 @@
 import numpy as np # imported numpy module
 import cv2 # imported cv2 module
 import pyrealsense2 as rs # imported pyrealsense
+import time
 
 class ObjectDetector:
     def __init__(self, calibration_matrix_path):
