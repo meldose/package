@@ -75,18 +75,6 @@ class RobotController:
         self.robot.move_joint("P57")
 
     def move_robot_based_on_angle(self,yaw_rad):
-        # calibration_matrix = r"/home/hrg/Documents/package_detection/cam_to_tcp_transform.npy"
-        # detector=ObjectDetector(calibration_matrix)
-        # robot_control=RobotController()
-        # detection=detector.get_detection()
-        # yaw_rad=np.deg2rad(detection["orientation_deg"])
-        # tcp_pose_current=robot_control.robot.get_tcp_pose()
-        # T_tcp_to_base=robot_control.pose_to_matrix(tcp_pose_current,gripper_offset_z=-0.087) # adjusting the offset for the gripper
-
-        # pos_cam_hom=np.array([*detection["position_camera"],1])
-        # base_coords=T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom
-        # target_pose=[base_coords[0],base_coords[1],base_coords[2],0,np.pi,yaw_rad]
-
         if yaw_rad ==0:
 
             self.robot.move_joint([0.18229699489025253,
