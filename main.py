@@ -64,6 +64,7 @@ def main():
                 no_detection_count = 0
 
             tcp_pose_current = robot_control.robot.get_tcp_pose()
+            print(tcp_pose_current)
             T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.091)
 
             # Transform the detected camera position into the robot's base coordinates
@@ -72,6 +73,7 @@ def main():
 
             yaw_rad = np.deg2rad(detection["orientation_deg"])
             target_pose = [base_coords[0], base_coords[1], base_coords[2], 0, np.pi, yaw_rad]
+            print(target_pose)
 
             logging.info("Moving to target pose: %s", target_pose)
             robot_control.move_to_pose(target_pose, speed=0.2)
