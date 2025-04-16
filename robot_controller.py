@@ -74,10 +74,6 @@ class RobotController:
         # self.robot.move_joint("P51")
         self.robot.move_joint("P57")
         io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0]) # open
-        self.robot.move_joint("P59")
-        io_set = self.robot.set_tool_digital_outputs([1.0,0.0,0.0]) # close
-        # self.robot.move_joint("P30")
-        io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0])
         self.robot.move_joint("New_capture")
         self.robot.stop()
 
