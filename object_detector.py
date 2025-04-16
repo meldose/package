@@ -125,6 +125,9 @@ class ObjectDetector:
     def get_last_color_image(self):
         return self.latest_color_image
 
+    def get_focal_length(self):
+        return self.intrinsics.fx  # Can also return (fx + fy) / 2 if needed
+
     def __del__(self):
         self.release()
 
