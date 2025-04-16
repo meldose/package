@@ -1,13 +1,13 @@
-import numpy as np
-import cv2
-import os
-import time
+import numpy as np # imported numpy
+import cv2 # imported cv2 module
+import os # imported os module
+import time # imported time moudule
 import logging
 from neurapy.robot import Robot
 from object_detector import ObjectDetector
 from robot_controller import RobotController
 
-class NoObjectDetectedError(Exception):
+class NoObjectDetectedError(Exception): # class No object detected 
     pass
 
 logging.basicConfig(
@@ -16,6 +16,9 @@ logging.basicConfig(
     format='%(asctime)s [%(levelname)s] %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
+
+
+ ### MAIN FUNCTION ###
 
 def main():
     r = Robot()
@@ -66,6 +69,7 @@ def main():
             tcp_pose_current = robot_control.robot.get_tcp_pose()
             print(tcp_pose_current)
             T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.091)
+            print(T_tcp_to_base)
 
             # Transform the detected camera position into the robot's base coordinates
             pos_cam_hom = np.array([*detection["position_camera"], 1])
