@@ -1,26 +1,60 @@
-import numpy as np
-import cv2
-import pyrealsense2 as rs
+# object_detector.py
+import numpy as np # imported numpy module
+import cv2 # imported cv2 module
+import pyrealsense2 as rs # imported pyrealsense
 import time
 
 
 class ObjectDetector:
-    def __init__(self, calibration_matrix_path, visualize=True):
-        try:
-            self.T_cam_to_tcp = np.load(calibration_matrix_path)
-        except FileNotFoundError:
-            raise ValueError(f"Calibration matrix file not found at: {calibration_matrix_path}")
-
+    def __init__(self, calibration_matrix_path):
+        self.T_cam_to_tcp = np.load(calibration_matrix_path)
         self.pipeline = rs.pipeline()
         cfg = rs.config()
-        cfg.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
-        cfg.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
+        cfg.enable_stream(rs.stream.color, 1280,720,rs.format.bgr8,30)
+        cfg.enable_stream(rs.stream.depth,1280,720,rs.format.z16,30)
         self.profile = self.pipeline.start(cfg)
         self.intrinsics = self.profile.get_stream(rs.stream.color).as_video_stream_profile().get_intrinsics()
         self.align = rs.align(rs.stream.color)
 
-        self.visualize = visualize
-        self.latest_color_image = None
+
+    def get_detection(self): # created function for getting object detection
+        frames = self.pipeline.wait_for_frames() # settung up the frames
+        aligned_frames = self.align.process(frames) # setting aligned frames
+        
+        color_frame = aligned_frames.get_color_frame() # setting the color frame
+        depth_frame = aligned_frames.get_depth_frame() # setting up the depth frame
+ 
+        if not color_frame or not depth_frame: # if there is not color frame and depth frame 
+            return None # return None
+
+        color_image = np.asanyarray(color_frame.get_data())
+        gray = cv2.cvtColor(color_image, cv2.COLOR_BGR2GRAY)
+        _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
+        contours,_ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        best_contour = max(contours, key=cv2.contourArea, default=None)
+
+        if best_contour is None or cv2.contourArea(best_contour)<1000:
+            return None
+
+        rect = cv2.minAreaRect(best_contour) 
+        (center_x, center_y),_,angle=rect 
+        center_x,center_y = int(center_x),int(center_y)
+
+        depth_value = depth_frame.get_distance(center_x,center_y)
+        if depth_value<=0:
+            return None
+
+        xyz_camera = rs.rs2_deproject_pixel_to_point(self.intrinsics,[center_x,center_y],depth_value)
+        xyz_camera = np.array([*xyz_camera,1])
+
+        detection={
+            "pixel":(center_x,center_y),
+            "position_camera":xyz_camera[:3],
+            "orientation_deg":angle,
+            "color_image": color_image 
+        }
+        return detection
 
     def get_detection(self, retry_count=5, delay_sec=0.5, show_when_none=True):
         """Attempts to detect an object. Retries if none found."""
@@ -91,16 +125,6 @@ class ObjectDetector:
             # Transform the camera coordinates to the robot's TCP frame
             position_tcp = self.T_cam_to_tcp @ xyz_camera
 
-            if self.visualize:
-                debug_image = color_image.copy()
-                cv2.drawContours(debug_image, [valid_contour], -1, (0, 255, 0), 2)
-                cv2.circle(debug_image, (center_x, center_y), 5, (0, 0, 255), -1)
-                cv2.putText(debug_image, f"Depth: {depth_value:.3f}m", (center_x + 10, center_y),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-                cv2.imshow("Detection", debug_image)
-                cv2.imshow("Depth Image", depth_colormap)
-                cv2.waitKey(1)
-
             return {
                 "pixel": (center_x, center_y),
                 "position_camera": xyz_camera[:3],  # 3D coordinates in camera space
@@ -128,12 +152,8 @@ class ObjectDetector:
     def get_focal_length(self):
         return self.intrinsics.fx  # Can also return (fx + fy) / 2 if needed
 
-    def __del__(self):
-        self.release()
+    # def __del__(self):
+    #     self.release()
 
     def release(self):
-        try:
-            self.pipeline.stop()
-        except Exception as e:
-            print(f"[ObjectDetector] Error during release: {e}")
-        cv2.destroyAllWindows()
+        self.pipeline.stop()
