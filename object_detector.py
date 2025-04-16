@@ -123,7 +123,6 @@ class ObjectDetector:
 
     def __del__(self):
         self.release()
->>>>>>> 2e7ee3232bbfaa302f6ea9bb127c9913d2e4a652
 
     def release(self):
         self.pipeline.stop()
