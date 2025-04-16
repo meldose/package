@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np # imported numpy
 import cv2
 from scipy.spatial.transform import Rotation as R
 from neurapy.robot import Robot
@@ -9,7 +9,7 @@ from robot_controller import RobotController
 DESIRED_PLACEMENT_RPY = [0, np.pi, 0]  # example: place flat, flipped along Y
 
 # Fixed location to place items
-PLACEMENT_POSITION = [0.182, -0.450, 0.370]  # adjust based on your table layout
+PLACEMENT_POSITION = [0.3, 0.2, 0.15]  # adjust based on your table layout
 
 def main():
     # Initialize detector & robot
@@ -32,12 +32,9 @@ def main():
 
             # Get current TCP pose and transform detection into base coordinates
             tcp_pose_current = robot_control.robot.get_tcp_pose()
-            print(tcp_pose_current)
-            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.089)
-            print(T_tcp_to_base)
+            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.087)
             pos_cam_hom = np.array([*detection["position_camera"], 1])
             base_coords = T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom
-            print(base_coords)
 
             # Orientation from detection
             # If only yaw is provided, fallback to [0, 0, yaw]
