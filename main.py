@@ -32,15 +32,18 @@ def main(): # defining main function
             T_tcp_to_base=robot_control.pose_to_matrix(tcp_pose_current,gripper_offset_z=-0.087) # adjusting the offset for the gripper
 
             pos_cam_hom=np.array([*detection["position_camera"],1]) # getting the camera position
+            print(pos_cam_hom)
             base_coords=T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom # getting the base coordinates
+            print(base_coords)
 
             yaw_rad=np.deg2rad(detection["orientation_deg"]) # gettting the orientation angle over Z AXIS
             print(yaw_rad)
 
             target_pose=[base_coords[0],base_coords[1],base_coords[2],0,np.pi,yaw_rad] # defining the target pose
+            print("[TARGET POSE]",target_pose)
             yaw_deg = np.rad2deg(yaw_rad) # setting the yaw angle
             print(yaw_deg)
-            print("[TARGET POSE]",target_pose)
+
             
             img=detection["color_image"] # setting the image
             cv2.circle(img, detection["pixel"],5,(0,255,0),-1) # getting the pixel
