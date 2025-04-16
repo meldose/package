@@ -10,7 +10,7 @@ def main():
     r=Robot()
     r.set_mode("Automatic")
     r.move_joint("New_capture")
-    calibration_matrix = r"/home/hrg/Desktop/package_detection/cam_to_tcp_transform.npy"
+    calibration_matrix = r"/home/hrg/Desktop/package/cam_to_tcp_transform.npy"
     #calibration_matrix = r"C:\Users\HeraldSuriaraj\Documents\neurapy-windows-v4.20.0\neurapy-windows-v4.20.0\cam_to_tcp_transform.npy"
     detector=ObjectDetector(calibration_matrix)
     robot_control=RobotController()
