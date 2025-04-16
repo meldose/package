@@ -74,7 +74,7 @@ class RobotController:
         self.robot.move_joint("P50")
         self.robot.move_joint("P57")
 
-    def move_robot_based_on_angle(self,yaw_rad):
+    def move_robot_based_on_angle(self,yaw_deg):
         # calibration_matrix = r"/home/hrg/Documents/package_detection/cam_to_tcp_transform.npy"
         # detector=ObjectDetector(calibration_matrix)
         # robot_control=RobotController()
@@ -87,7 +87,7 @@ class RobotController:
         # base_coords=T_tcp_to_base @ detector.T_cam_to_tcp @ pos_cam_hom
         # target_pose=[base_coords[0],base_coords[1],base_coords[2],0,np.pi,yaw_rad]
 
-        if yaw_rad == 0 or yaw_rad == 360:
+        if yaw_deg == 0 or yaw_deg == 360:
 
             self.robot.move_joint([0.18229699489025253,
             -0.45074154634338454,
@@ -97,7 +97,7 @@ class RobotController:
             0.7935212814262113,
             0.0006595128791383861]
             )
-        elif yaw_rad == 90 or yaw_rad == 180:
+        elif yaw_deg == 90 or yaw_deg == 180:
 
             self.robot.move_joint([-1.1864124246453485,
                 0.6649982733787552,
