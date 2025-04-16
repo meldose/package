@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+from scipy.spatial.transform import Rotation as R
 from neurapy.robot import Robot
 from object_detector import ObjectDetector
 from robot_controller import RobotController
@@ -27,7 +28,7 @@ def main():
                 print("[DEBUG] No object detected.")
                 continue
 
-            print("[DETECTED] Camera XYZ:", detection["position_camera"], "Angle deg:", detection["orientation_deg"])
+            print("[DETECTED] Camera XYZ:", detection["position_camera"], "Angle XYZ deg:", detection.get("orientation_deg_xyz", detection["orientation_deg"]))
 
             # Get current TCP pose and transform detection into base coordinates
             tcp_pose_current = robot_control.robot.get_tcp_pose()
@@ -39,14 +40,25 @@ def main():
             print(base_coords)
 
             # Orientation from detection
-            yaw_rad = np.deg2rad(detection["orientation_deg"])
+            # If only yaw is provided, fallback to [0, 0, yaw]
+            euler_deg = detection.get("orientation_deg_xyz", [0, 0, detection["orientation_deg"]])
+            euler_rad = np.deg2rad(euler_deg)
 
-            # Construct pickup pose with object orientation
+            # Convert to rotation matrix
+            object_rot = R.from_euler('xyz', euler_rad).as_matrix()
+
+            # Invert to align gripper to object
+            gripper_rot = object_rot.T  # Transpose = inverse for rotation matrices
+
+            # Convert back to Euler angles for robot
+            gripper_euler = R.from_matrix(gripper_rot).as_euler('xyz')
+
+            # Construct pickup pose with adjusted orientation
             pickup_pose = [
                 base_coords[0],
                 base_coords[1],
                 base_coords[2],
-                0, np.pi, yaw_rad
+                *gripper_euler
             ]
             print("[PICKUP POSE]", pickup_pose)
 
