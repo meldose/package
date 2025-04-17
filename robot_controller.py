@@ -42,7 +42,7 @@ class RobotController: # defining class RobotController
 
         return T_final # returning the final transformation
 
-    def move_to_pose(self, pose_xyzrpy, speed=0.1): # defining a function named move_to_pose
+    def move_to_pose(self, pose_xyzrpy, speed=0.05): # defining a function named move_to_pose
         
         
         linear_property = {
