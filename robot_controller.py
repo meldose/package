@@ -94,7 +94,39 @@ class RobotController: # defining class RobotController
             -2.830129014919057]
             )
 
-        elif yaw_rad <=0.9: # if the yaw angle is less than 0.9
+        elif 0.01 >= yaw_rad <=0.07: # if the yaw angle is less than 0.015
+
+            self.robot.move_joint([-1.1470438713242237,
+            0.6759784449412598,
+            0.8166148222337324,
+            -0.00039622843593335163,
+            1.6490518173987618,
+            -1.03197134378299]
+            )
+
+        elif 1.3 >= yaw_rad <=1.5: # if the yaw angle is less than 0.015
+
+            self.robot.move_joint([-1.1470438713242237,
+            0.6759784449412598,
+            0.8166148222337324,
+            -0.00039622843593335163,
+            1.6490518173987618,
+            -1.03197134378299]
+            )
+
+
+        elif 0.019 >= yaw_rad <=0.03: # if the yaw angle is less than 0.015
+
+            self.robot.move_joint([-1.1861641264855907,
+            0.6636957379343542,
+            0.8012465518207258,
+            -0.00035465815579289604,
+            1.6767226436911735,
+            -1.2494101244095532]
+
+            )
+
+        elif 0.5 >= yaw_rad <=0.9: # if the yaw angle is less than 0.9
 
             self.robot.move_joint([-1.1861648754996472,
             0.6636897458219015,
@@ -114,7 +146,7 @@ class RobotController: # defining class RobotController
             0.7935212814262113,
             0.0006595128791383861]
             )
-        elif yaw_rad <=1.59: # if the yaw angle is less than 1.59
+        elif 1.52 >= yaw_rad <=1.59: # if the yaw angle is less than 1.59
 
             self.robot.move_joint([-1.1864124246453485,
                 0.6649982733787552,
@@ -122,6 +154,26 @@ class RobotController: # defining class RobotController
                 -0.00040783815381041584,
                 1.6769492204432905,
                 -1.555638154824762]
+                )
+            
+        elif 1.57 >= yaw_rad <=1.58: # if the yaw angle is less than 1.59
+
+            self.robot.move_joint([-1.1861678715558734,
+            0.6726569421073346,
+            0.7471812191883228,
+            -0.0003531601276797265,
+            1.7218234015873415,
+            -2.6919392920424183]
+                )
+            
+        elif 1.50 >= yaw_rad <=1.58: # if the yaw angle is less than 1.59
+
+            self.robot.move_joint([-1.1861678715558734,
+            0.6726569421073346,
+            0.7471812191883228,
+            -0.0003531601276797265,
+            1.7218234015873415,
+            -2.6919392920424183]
                 )
             
         elif yaw_rad >=3.14159: # if the yaw angle is greater than 3.14159
@@ -134,7 +186,7 @@ class RobotController: # defining class RobotController
                 -1.555638154824762]
                 )
             
-        elif yaw_rad ==-3.14159: # if the yaw angle is equal to -3.14159
+        elif yaw_rad <=0.019: # if the yaw angle is equal to -3.14159
 
             self.robot.move_joint([-1.1864124246453485,
                 0.6649982733787552,
