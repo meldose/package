@@ -216,5 +216,6 @@ if __name__ == "__main__": # define main
     calib = CalibrationSystem() # set up the calibration system
     
 
-calib.calibrate_eye_hand()
-calib.load_calibration_data()
+calib.calibrate_eye_hand() # calling function for calibration
+calib.load_calibration_data() # calling function for loading data
+calib.calculate_reprojection_error() # calling function for calculating reprojection error
