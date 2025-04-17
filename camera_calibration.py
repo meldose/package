@@ -2,49 +2,52 @@ import cv2
 import numpy as np
 import glob
 
-# Define the checkerboard size (number of internal corners)
-CHECKERBOARD = (9, 6)
+# Set the chessboard size (number of inner corners per chessboard row and column)
+chessboard_size = (9, 6)  # (columns, rows) of internal corners
+square_size = 1.0  # Set this to the real size of your squares (e.g., 25mm, 1cm, etc.)
 
-# Termination criteria for cornerSubPix
-criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-
-# 3D points in real world space
-objp = np.zeros((CHECKERBOARD[0]*CHECKERBOARD[1], 3), np.float32)
-objp[:, :2] = np.mgrid[0:CHECKERBOARD[0], 0:CHECKERBOARD[1]].T.reshape(-1, 2)
+# Prepare 3D points in real world space (0,0,0), (1,0,0), (2,0,0), ..., (8,5,0)
+objp = np.zeros((chessboard_size[0] * chessboard_size[1], 3), np.float32)
+objp[:, :2] = np.mgrid[0:chessboard_size[0], 0:chessboard_size[1]].T.reshape(-1, 2)
+objp *= square_size
 
 # Arrays to store object points and image points
-objpoints = []  # 3D point in real world
+objpoints = []  # 3D points in real world
 imgpoints = []  # 2D points in image plane
 
-# Load images
-images = glob.glob('calib_images/*.jpg')  # Your images folder
+# Load calibration images
+images = glob.glob('calibration_images/*.jpg')  # adjust path and extension
 
 for fname in images:
     img = cv2.imread(fname)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # Find the chessboard corners
-    ret, corners = cv2.findChessboardCorners(gray, CHECKERBOARD, None)
+    # Find the chess board corners
+    ret, corners = cv2.findChessboardCorners(gray, chessboard_size, None)
 
     if ret:
         objpoints.append(objp)
-        corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
-        imgpoints.append(corners2)
+        imgpoints.append(corners)
 
-        # Optional: show detected corners
-        cv2.drawChessboardCorners(img, CHECKERBOARD, corners2, ret)
+        # Draw and display the corners
+        cv2.drawChessboardCorners(img, chessboard_size, corners, ret)
         cv2.imshow('Corners', img)
         cv2.waitKey(100)
 
-        cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
 
-        # Calibrate the camera
-        ret, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
-            objpoints, imgpoints, gray.shape[::-1], None, None
-        )
+    # Calibration
+    ret, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
+        objpoints, imgpoints, gray.shape[::-1], None, None
+    )
 
-        print("Camera matrix:\n", camera_matrix)
-        print("Distortion coefficients:\n", dist_coeffs)
+    # Print the results
+    print("Camera matrix:\n", camera_matrix)
+    print("Distortion coefficients:\n", dist_coeffs)
 
-        np.savez('calibration_data.npz', camera_matrix=camera_matrix,
-                dist_coeffs=dist_coeffs, rvecs=rvecs, tvecs=tvecs)
+    # Save to file
+    np.savez("calibration_data.npz", 
+            camera_matrix=camera_matrix, 
+            dist_coeffs=dist_coeffs, 
+            rvecs=rvecs, 
+            tvecs=tvecs)
