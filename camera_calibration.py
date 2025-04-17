@@ -215,8 +215,6 @@ if __name__ == "__main__":
     # Example usage
     calib = CalibrationSystem()
     
-# calib.set_camera_params()
-# calib.capture_pose(image="/home/midhun.eldose/Desktop/package/checkerboard_9x6_25mm.png",robot_pose=[0.351,-0.341,0.518])
-# calib.load_calibration_data()
+
 calib.calibrate_eye_hand()
-# calib.calculate_reprojection_error()
+
