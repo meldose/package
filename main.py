@@ -28,7 +28,7 @@ def main():
             print("[DETECTED] Camera XYZ:", detection["position_camera"], "Angle deg:", detection["orientation_deg"])
 
             tcp_pose_current = robot_control.robot.get_tcp_pose()
-            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.087)
+            T_tcp_to_base = robot_control.pose_to_matrix(tcp_pose_current, gripper_offset_z=-0.103)
 
             pos_cam_hom = np.array([*detection["position_camera"], 1])
             print("[HOMOGENEOUS CAMERA POSITION]", pos_cam_hom)
