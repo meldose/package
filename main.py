@@ -52,7 +52,7 @@ def main():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            robot_control.move_to_pose(target_pose, speed=0.05)
+            robot_control.move_to_pose(target_pose, speed=0.06)
             print("STARTING THE ROBOT")
             robot_control.move_robot_based_on_angle(yaw_rad=yaw_rad)
             print("FINISHED ::::::::::::::::::::")
