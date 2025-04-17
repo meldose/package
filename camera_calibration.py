@@ -52,6 +52,7 @@ class CalibrationSystem:
         # Convert to grayscale
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if len(image.shape) == 3 else image
         
+        image="/home/midhun.eldose/Desktop/package/checkerboard_9x6_25mm.png"
         # Find checkerboard corners
         found, corners = cv2.findChessboardCorners(gray, self.checkerboard_size, None)
         
@@ -214,8 +215,8 @@ if __name__ == "__main__":
     # Example usage
     calib = CalibrationSystem()
     
-calib.set_camera_params()
-calib.capture_pose()
-calib.load_calibration_data()
+# calib.set_camera_params()
+# calib.capture_pose(image="/home/midhun.eldose/Desktop/package/checkerboard_9x6_25mm.png",robot_pose=[0.351,-0.341,0.518])
+# calib.load_calibration_data()
 calib.calibrate_eye_hand()
-calib.calculate_reprojection_error()
+# calib.calculate_reprojection_error()
