@@ -6,7 +6,7 @@ import time # importing time module
 class RobotController: # defining class RobotController
     def __init__(self, robot_ip=None): # intializing the class
         self.robot = Robot(robot_ip) if robot_ip else Robot()
-        self.robot.set_mode("Automatic")
+        self.robot.set_mode("Automatic") # setting the robot to Automatic Mode
 
     def pose_to_matrix(self, tcp_pose, gripper_offset_z): # defining the function for pose to matrix
         """
