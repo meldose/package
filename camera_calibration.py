@@ -1,12 +1,12 @@
-import numpy as np
-import cv2
-import os
-import json
-import time
-from datetime import datetime
+import numpy as np # import numpy module
+import cv2 # import cv2 module 
+import os # import os module
+import json # immport json module
+import time # import time module
+from datetime import datetime # import datetime module
 
-class CalibrationSystem:
-    def __init__(self, checkerboard_size=(9, 6), square_size=0.025, save_dir="calibration_data"):
+class CalibrationSystem: # defining the class
+    def __init__(self, checkerboard_size=(9, 6), square_size=0.025, save_dir="calibration_data"): # initializing the class
         """
         Initialize calibration system
         
@@ -15,9 +15,9 @@ class CalibrationSystem:
             square_size: Size of each square in meters
             save_dir: Directory to save calibration data
         """
-        self.checkerboard_size = checkerboard_size
-        self.square_size = square_size
-        self.save_dir = save_dir
+        self.checkerboard_size = checkerboard_size # defining the checkerboard size
+        self.square_size = square_size # defining the square size
+        self.save_dir = save_dir # defining the save directory
         
         # Create directories if they don't exist
         if not os.path.exists(save_dir):
@@ -31,12 +31,12 @@ class CalibrationSystem:
         self.camera_matrix = None
         self.dist_coeffs = None
         
-    def set_camera_params(self, camera_matrix, dist_coeffs):
+    def set_camera_params(self, camera_matrix, dist_coeffs): # defining the function for setting camera parameters
         """Set camera intrinsic parameters from prior calibration"""
         self.camera_matrix = camera_matrix
         self.dist_coeffs = dist_coeffs
     
-    def capture_pose(self, image, robot_pose, capture_id=None):
+    def capture_pose(self, image, robot_pose, capture_id=None): # defining the function for capturing pose
         """
         Capture checkerboard and robot pose
         
@@ -216,5 +216,5 @@ if __name__ == "__main__":
     calib = CalibrationSystem()
     
 
-calib.calibrate_eye_hand()
-
+# calib.calibrate_eye_hand()
+calib.load_calibration_data()
