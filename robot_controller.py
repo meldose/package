@@ -114,6 +114,16 @@ class RobotController: # defining class RobotController
             -1.03197134378299]
             )
 
+        elif 0.2 >= yaw_rad <=0.4: # if the yaw angle is less than 0.015
+
+            self.robot.move_joint([-1.18398861515824,
+            0.596268369039507,
+            0.8626878003753474,
+            -0.00027001956739881525,
+            1.6827125091016821,
+            -0.5077053214959502]
+            )
+
 
         elif 0.019 >= yaw_rad <=0.03: # if the yaw angle is less than 0.015
 
@@ -126,7 +136,7 @@ class RobotController: # defining class RobotController
 
             )
 
-        elif 0.5 >= yaw_rad <=0.9: # if the yaw angle is less than 0.9
+        elif 0.4 >= yaw_rad <=0.9: # if the yaw angle is less than 0.9
 
             self.robot.move_joint([-1.1861648754996472,
             0.6636897458219015,
@@ -195,6 +205,48 @@ class RobotController: # defining class RobotController
                 1.6769492204432905,
                 -1.555638154824762]
                 )
+            
+        elif 0.17 >= yaw_rad <=1.19: # if the yaw angle is equal to -3.14159
+
+            self.robot.move_joint([-1.1865757097096838,
+            0.6631530772503585,
+            0.8013405530848271,
+            -0.00040222054838602995,
+            1.6769795555125822,
+            -1.6692055386192886]
+                )
+            
+        elif 0.17 >= yaw_rad <=0.6: # if the yaw angle is equal to -3.14159
+
+            self.robot.move_joint([-1.1865757097096838,
+            0.6631530772503585,
+            0.8013405530848271,
+            -0.00040222054838602995,
+            1.6769795555125822,
+            -1.6692055386192886]
+                )
+            
+        elif 0.7 >= yaw_rad <=0.75: # if the yaw angle is equal to -3.14159
+
+            self.robot.move_joint([-1.191919550496388,
+            0.6405141273900834,
+            0.932262218063395,
+            -0.0001423126707511093,
+            1.5689619913703203,
+            0.1214376489940913]
+            )
+
+        elif 0.8 >= yaw_rad <=0.9: # if the yaw angle is equal to -3.14159
+
+            self.robot.move_joint([-1.1533427050330736,
+            0.7191894403726644,
+            0.7156421098006789,
+            -0.00015130083943012672,
+            1.7069045396082858,
+            -1.9343445304253974]
+            )
+            
+            
             
         io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0]) # setting the tool digital outputs
         self.robot.move_joint("New_capture") # setting the robot in New_capture position
