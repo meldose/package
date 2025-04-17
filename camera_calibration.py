@@ -36,12 +36,15 @@ for fname in images:
         cv2.imshow('Corners', img)
         cv2.waitKey(100)
 
-cv2.destroyAllWindows()
+        cv2.destroyAllWindows()
 
-# Calibrate the camera
-ret, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
-    objpoints, imgpoints, gray.shape[::-1], None, None
-)
+        # Calibrate the camera
+        ret, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
+            objpoints, imgpoints, gray.shape[::-1], None, None
+        )
 
-print("Camera matrix:\n", camera_matrix)
-print("Distortion coefficients:\n", dist_coeffs)
+        print("Camera matrix:\n", camera_matrix)
+        print("Distortion coefficients:\n", dist_coeffs)
+
+        np.savez('calibration_data.npz', camera_matrix=camera_matrix,
+                dist_coeffs=dist_coeffs, rvecs=rvecs, tvecs=tvecs)
