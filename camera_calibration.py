@@ -211,10 +211,10 @@ class CalibrationSystem: # defining the class
             
         return errors
     
-if __name__ == "__main__":
+if __name__ == "__main__": # define main
     # Example usage
-    calib = CalibrationSystem()
+    calib = CalibrationSystem() # set up the calibration system
     
 
-# calib.calibrate_eye_hand()
+calib.calibrate_eye_hand()
 calib.load_calibration_data()
