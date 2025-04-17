@@ -42,7 +42,7 @@ class RobotController: # defining class RobotController
 
         return T_final # returning the final transformation
 
-    def move_to_pose(self, pose_xyzrpy, speed=0.2): # defining a function named move_to_pose
+    def move_to_pose(self, pose_xyzrpy, speed=0.1): # defining a function named move_to_pose
         
         
         linear_property = {
@@ -265,6 +265,26 @@ class RobotController: # defining class RobotController
             1.6642511851420085,
             -2.1445186237171447]
             )
+
+        elif 0.27 >= yaw_rad <=0.28: # if the yaw angle is equal to -3.14159
+
+            self.robot.move_joint([-1.1786893407079027,
+            0.740354705076609,
+            0.6871331367789488,
+            -0.0002943625242378208,
+            1.7142377617292792,
+            -1.6555540084239744]
+            )
+        elif 1.11 >= yaw_rad <=1.13: # if the yaw angle is equal to -3.14159
+
+            self.robot.move_joint([-1.1786893407079027,
+            0.740354705076609,
+            0.6871331367789488,
+            -0.0002943625242378208,
+            1.7142377617292792,
+            -1.6555540084239744]
+            )
+            
             
         io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0]) # setting the tool digital outputs
         self.robot.move_joint("New_capture") # setting the robot in New_capture position

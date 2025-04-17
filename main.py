@@ -51,7 +51,7 @@ def main(): # defining main function
             if cv2.waitKey(1)&0xFF==ord('q'):
                 break
             
-            robot_control.move_to_pose(target_pose,speed=0.2) # moving to the target pose
+            robot_control.move_to_pose(target_pose,speed=0.1) # moving to the target pose
 
             print("STARTING THE ROBOT")
 
