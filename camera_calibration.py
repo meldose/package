@@ -209,3 +209,37 @@ class CalibrationSystem:
             errors.append({"rotation_error": R_error, "translation_error": t_error})
             
         return errors
+    
+if __name__ == "__main__":
+    # Example usage
+    calib = CalibrationSystem()
+    
+    # Dummy camera matrix and distortion coefficients (replace with real ones)
+    camera_matrix = np.array([[600, 0, 320],
+                              [0, 600, 240],
+                              [0, 0, 1]], dtype=np.float64)
+    dist_coeffs = np.zeros(5)  # Assume no distortion
+
+    calib.set_camera_params(camera_matrix, dist_coeffs)
+
+    # Load an example image (replace with actual image path)
+    image_path = "checkerboard_sample.jpg"
+    if os.path.exists(image_path):
+        image = cv2.imread(image_path)
+        
+        # Dummy robot pose (replace with real robot data)
+        robot_pose = {
+            "position": [0.1, 0.2, 0.3],
+            "rotation_matrix": np.eye(3).tolist()
+        }
+
+        success, data, vis_img = calib.capture_pose(image, robot_pose)
+        if success:
+            print("Pose captured and saved.")
+            cv2.imshow("Checkerboard", vis_img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+        else:
+            print("Checkerboard not found.")
+    else:
+        print(f"Image not found at path: {image_path}")
