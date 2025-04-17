@@ -74,7 +74,7 @@ class RobotController: # defining class RobotController
         self.robot.move_joint("P57") # move the robot to P57 position
 
     def move_robot_based_on_angle(self,yaw_rad): # defining a function named move_robot_based_on_angle
-        if yaw_rad <=1.2: # if the yaw angle is less than 1.2
+        if 1.1 >= yaw_rad <=1.2: # if the yaw angle is less than 1.2
 
             self.robot.move_joint([-1.1861648754996472,
             0.6636897458219015,
@@ -114,7 +114,7 @@ class RobotController: # defining class RobotController
             -1.03197134378299]
             )
 
-        elif 0.2 >= yaw_rad <=0.4: # if the yaw angle is less than 0.015
+        elif 0.23 >= yaw_rad <=0.4: # if the yaw angle is less than 0.015
 
             self.robot.move_joint([-1.18398861515824,
             0.596268369039507,
@@ -204,6 +204,16 @@ class RobotController: # defining class RobotController
                 -0.00040783815381041584,
                 1.6769492204432905,
                 -1.555638154824762]
+                )
+            
+        elif 0.017 >= yaw_rad <=0.019: # if the yaw angle is equal to -3.14159
+
+            self.robot.move_joint([-1.1854585552442878,
+            0.6222853722949795,
+            0.8609792993122776,
+            -0.00034267393088753946,
+            1.6584092500076755,
+            -0.9796598275640802]
                 )
             
         elif 0.17 >= yaw_rad <=1.19: # if the yaw angle is equal to -3.14159
