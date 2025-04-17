@@ -223,23 +223,23 @@ if __name__ == "__main__":
     calib.set_camera_params(camera_matrix, dist_coeffs)
 
     # Load an example image (replace with actual image path)
-    image_path = "checkerboard_sample.jpg"
-    if os.path.exists(image_path):
-        image = cv2.imread(image_path)
+    # image_path = "checkerboard_sample.jpg"
+    # if os.path.exists(image_path):
+    #     image = cv2.imread(image_path)
         
-        # Dummy robot pose (replace with real robot data)
-        robot_pose = {
-            "position": [0.1, 0.2, 0.3],
-            "rotation_matrix": np.eye(3).tolist()
-        }
+    #     # Dummy robot pose (replace with real robot data)
+    #     robot_pose = {
+    #         "position": [0.1, 0.2, 0.3],
+    #         "rotation_matrix": np.eye(3).tolist()
+    #     }
 
-        success, data, vis_img = calib.capture_pose(image, robot_pose)
-        if success:
-            print("Pose captured and saved.")
-            cv2.imshow("Checkerboard", vis_img)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-        else:
-            print("Checkerboard not found.")
-    else:
-        print(f"Image not found at path: {image_path}")
+    #     success, data, vis_img = calib.capture_pose(image, robot_pose)
+    #     if success:
+    #         print("Pose captured and saved.")
+    #         cv2.imshow("Checkerboard", vis_img)
+    #         cv2.waitKey(0)
+    #         cv2.destroyAllWindows()
+    #     else:
+    #         print("Checkerboard not found.")
+    # else:
+    #     print(f"Image not found at path: {image_path}")
