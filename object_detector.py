@@ -147,7 +147,7 @@ class ObjectDetector:
 
     def get_last_color_image(self):
         return self.latest_color_image
-
+    
     def get_focal_length(self, average=False):
         return (self.intrinsics.fx + self.intrinsics.fy) / 2 if average else self.intrinsics.fx
 

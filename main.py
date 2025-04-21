@@ -1,8 +1,8 @@
-import numpy as np
-import cv2
+import numpy as np # import numpy module
+import cv2 # import cv2 module
 from neurapy.robot import Robot
-from object_detector import ObjectDetector
-from robot_controller import RobotController
+from object_detector import ObjectDetector # importing object_detector
+from robot_controller import RobotController # importing robot_controller
 
 def main():
     r = Robot()
