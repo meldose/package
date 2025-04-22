@@ -15,8 +15,10 @@ camera_matrix = np.array([[615.0, 0, 320.0],
 
 # Example: distortion coefficients
 dist_coeffs = np.array([0, 0, 0, 0, 0])  # if assuming no distortion
-
+image="/home/hrg/Desktop/package/checkerboard_9x6_25mm.png"
 num_samples=10
+cols=9
+rows=6
 # Example: loop over multiple images and robot poses
 for i in range(num_samples):
     # Load image and detect chessboard
