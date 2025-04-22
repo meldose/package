@@ -6,6 +6,7 @@ import time # import time module
 from datetime import datetime # import datetime module
 
 class CalibrationSystem: # defining the class
+    
     def __init__(self, checkerboard_size=(9, 6), square_size=0.03, save_dir="calibration_data"): # initializing the class
         """
         Initialize calibration system
@@ -113,7 +114,7 @@ class CalibrationSystem: # defining the class
             R_target2cam: List of rotation matrices
             t_target2cam: List of translation vectors
         """
-        R_gripper2base = []
+        R_gripper2base = [0,0,0]
         t_gripper2base = []
         R_target2cam = []
         t_target2cam = []
