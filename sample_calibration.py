@@ -6,10 +6,14 @@ R_gripper2base = []  # from robot
 t_gripper2base = []
 R_target2cam = []    # from solvePnP
 t_target2cam = []
-
+ 
+num_samples=10
 # Example: loop over multiple images and robot poses
 for i in range(num_samples):
     # Load image and detect chessboard
+    image="/home/hrg/Desktop/package/checkerboard_9x6_25mm.png"
+    cols=9
+    rows=6
     ret, corners = cv2.findChessboardCorners(image, (cols, rows))
     if ret:
         # Solve PnP
