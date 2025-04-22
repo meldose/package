@@ -73,6 +73,26 @@ class RobotController: # defining class RobotController
         self.robot.move_joint("New_capture") # move the robot to New_capture position
         self.robot.move_joint("P50") # move the robot to P50 position
         self.robot.move_joint("P57") # move the robot to P57 position
+        
+    def check_gripper_status(self):
+        """
+        Reads digital inputs to determine if an item is picked.
+        Assumes tool digital input 0 (DI[0]) is used to indicate gripping status.
+        Returns 1 if item is picked, else 0.
+        """
+        try:
+            tool_inputs = self.robot.get_tool_digital_inputs()  # Example: [1.0, 0.0, 0.0]
+            print(f"Tool Digital Inputs: {tool_inputs}")
+
+            if tool_inputs and tool_inputs[0] == 1.0:
+                print("Gripper feedback: Item successfully picked.")
+                return 1
+            else:
+                print("Gripper feedback: No item detected.")
+                return 0
+        except Exception as e:
+            print(f"Error checking gripper status: {e}")
+            return -1  # Optional: -1 can indicate error/unavailable
  
     def move_robot_based_on_angle(self,yaw_rad): # defining a function named move_robot_based_on_angle
         if 1.1 >= yaw_rad <=1.2: # if the yaw angle is less than 1.2

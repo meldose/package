@@ -51,6 +51,8 @@ def main():
             cv2.imshow("Detection", img)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+            
+            robot_control.check_gripper_status()
 
             robot_control.move_to_pose(target_pose, speed=0.06)
             print("STARTING THE ROBOT")
