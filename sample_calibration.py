@@ -1,49 +1,58 @@
-import cv2
-import numpy as np
+def eye_to_hand_calib(target_poses, robot_poses):
+    """
+    target_poses (target2cam) are provided as list of tuples of (rvec, tvec).
+    robot_poses (gripper2base) are provided as list of lists [x, y, z, w, p, r]
+    """
 
-# Lists to store rotation and translation vectors
-R_gripper2base = []  # from robot
-t_gripper2base = []
-R_target2cam = []    # from solvePnP
-t_target2cam = []
-
-# Example: Intrinsic camera matrix
-camera_matrix = np.array([[615.0, 0, 320.0],
-                          [0, 615.0, 240.0],
-                          [0,   0,   1.0]])
-
-# Example: distortion coefficients
-dist_coeffs = np.array([0, 0, 0, 0, 0])  # if assuming no distortion
-image="/home/hrg/Desktop/package/checkerboard_9x6_25mm.png"
-num_samples=10
-cols=9
-rows=6
-
-# Example: loop over multiple images and robot poses
-for i in range(num_samples):
-    # Load image and detect chessboard
-    ret, corners = cv2.findChessboardCorners(image, (cols, rows))
-    if ret:
-        # Solve PnP
-        ret, rvec, tvec = cv2.solvePnP(object_points, corners, camera_matrix, dist_coeffs)
-        R_cam, _ = cv2.Rodrigues(rvec)
-        
-        # Append target to cam
-        R_target2cam.append(R_cam)
+    # 1. Collect target poses
+    R_target2cam = []
+    t_target2cam = []
+    for pose in target_poses:
+        rvec, tvec = pose
+        R_target2cam.append(rvec)
         t_target2cam.append(tvec)
 
-        # Append robot pose (gripper to base) for this image
-        R_g = ...  # 3x3 rotation from robot
-        t_g = ...  # 3x1 translation from robot
-        R_gripper2base.append(R_g)
-        t_gripper2base.append(t_g)
+    # 2. Collect robot poses
+    R_gripper2base = []
+    t_gripper2base = []
+    for pose in robot_poses:
+        # gripper2base
+        t = pose[0:3]
+        # gripper2base
+        wpr = pose[3:]
+        R = scipy.spatial.transform.Rotation.from_euler(
+            "XYZ", wpr, degrees=True
+        ).as_matrix()
 
-# Run calibration
-R_cam2gripper, t_cam2gripper = cv2.calibrateHandEye(
-    R_gripper2base, t_gripper2base,
-    R_target2cam, t_target2cam,
-    method=cv2.CALIB_HAND_EYE_TSAI
-)
+        R_gripper2base.append(R)
+        t_gripper2base.append(t)
 
-print("Rotation:\n", R_cam2gripper)
-print("Translation:\n", t_cam2gripper)
+    # 3. Transform from gripper2base to base2gripper
+    R_base2gripper = []
+    t_base2gripper = []
+    for R_g2b, t_g2b in zip(R_gripper2base, t_gripper2base):
+        R_b2g = R_g2b.T
+        t_b2g = np.matmul(-R_b2g, t_g2b)
+
+        R_base2gripper.append(R_b2g)
+        t_base2gripper.append(t_b2g)
+
+    # 4. Call calibration
+    # R_calib, t_calib = cv2.calibrateHandEye(
+    #     R_gripper2base=R_base2gripper,
+    #     t_gripper2base=t_base2gripper,
+    #     R_target2cam=R_target2cam,
+    #     t_target2cam=t_target2cam,
+    # )
+
+    R_calib, t_calib = cv2.calibrateHandEye(
+        R_gripper2base=R_target2cam,
+        t_gripper2base=t_target2cam,
+        R_target2cam=R_base2gripper,
+        t_target2cam=t_base2gripper,
+    )
+    print("R_cam2base: \n", R_calib)
+    print("t_cam2base: \n", t_calib)
+
+    H_base_camera = np.r_[np.c_[R, t_calib.flatten()], [[0, 0, 0, 1]]]
+    return H_base_camera
