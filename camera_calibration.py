@@ -136,7 +136,7 @@ class CalibrationSystem: # defining the class
         return R_gripper2base, t_gripper2base, R_target2cam, t_target2cam
     
     #def calibrate_eye_hand(self, target_poses,robot_poses,R_gripper2base, t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=True):
-    def calibrate_eye_hand(self, target_poses,robot_poses,eye_to_hand=True):
+    def eye_to_hand_calib(self, target_poses,robot_poses,eye_to_hand=True):
         """
         Perform eye-hand calibration using OpenCV
         
@@ -222,9 +222,7 @@ class CalibrationSystem: # defining the class
                     
                 # return R, t
 
-    def calculate_reprojection_error(self, R_cam2gripper, t_cam2gripper, 
-                                    R_gripper2base, t_gripper2base,
-                                    R_target2cam, t_target2cam):
+    def calculate_reprojection_error(self, R_cam2gripper, t_cam2gripper, R_gripper2base, t_gripper2base,R_target2cam, t_target2cam):
         """
         Calculate reprojection error of the calibration
         
