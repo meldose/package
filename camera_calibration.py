@@ -184,9 +184,7 @@ class CalibrationSystem: # defining the class
             
         return R, t
 
-    def calculate_reprojection_error(self, R_cam2gripper, t_cam2gripper, 
-                                    R_gripper2base, t_gripper2base,
-                                    R_target2cam, t_target2cam):
+    def calculate_reprojection_error(self, R_cam2gripper, t_cam2gripper, R_gripper2base, t_gripper2base,R_target2cam, t_target2cam):
         """
         Calculate reprojection error of the calibration
         
