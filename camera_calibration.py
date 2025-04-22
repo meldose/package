@@ -134,7 +134,7 @@ class CalibrationSystem: # defining the class
         print(f"Loaded {len(json_files)} calibration poses")
         return R_gripper2base, t_gripper2base, R_target2cam, t_target2cam
     
-    def calibrate_eye_hand(self, R_gripper2base, t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=False):
+    def calibrate_eye_hand(self, R_gripper2base, t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=True):
         """
         Perform eye-hand calibration using OpenCV
         
@@ -216,6 +216,6 @@ if __name__ == "__main__": # define main
     calib = CalibrationSystem() # set up the calibration system
     
 
-calib.calibrate_eye_hand() # calling function for calibration
-calib.load_calibration_data() # calling function for loading data
-calib.calculate_reprojection_error() # calling function for calculating reprojection error
+# calib.calibrate_eye_hand() # calling function for calibration
+# calib.load_calibration_data() # calling function for loading data
+# calib.calculate_reprojection_error() # calling function for calculating reprojection error
