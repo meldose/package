@@ -72,7 +72,7 @@ class RobotController: # defining class RobotController
         time.sleep(1) # setting the sleep time
         self.robot.move_joint("New_capture") # move the robot to New_capture position
         self.robot.move_joint("P50") # move the robot to P50 position
-        self.robot.move_joint("P57") # move the robot to P57 position
+        self.robot.move_joint("P68") # move the robot to P57 position
         
     def check_gripper_status(self):
         """
