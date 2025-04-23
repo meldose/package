@@ -151,7 +151,7 @@ class CalibrationSystem: # defining the class
             R_cam2gripper: Rotation matrix from camera to gripper
             t_cam2gripper: Translation vector from camera to gripper
         """
-        if eye_to_hand:
+        if eye_to_hand: # if there is eye to hand then :
 
             # 1. Collect target poses
             R_target2cam = []
@@ -162,7 +162,7 @@ class CalibrationSystem: # defining the class
                 t_target2cam.append(tvec)
 
             # 2. Collect robot poses
-            R_gripper2base = []
+            R_gripper2base = [] 
             t_gripper2base = []
             for pose in robot_poses:
                 # gripper2base
