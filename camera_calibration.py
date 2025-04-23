@@ -137,7 +137,7 @@ class CalibrationSystem: # defining the class
 
 
 ########### EYE TO HAND CALIBRATION ##########################
-    def calibrate_eye_hand(self, R_gripper2base, t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=True): # calibrate eye-hand
+    def calibrate_eye_hand(self, R_gripper2base, target_poses, robot_poses,t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=True): # calibrate eye-hand
         """
         Perform eye-hand calibration using OpenCV
         
@@ -152,17 +152,7 @@ class CalibrationSystem: # defining the class
             R_cam2gripper: Rotation matrix from camera to gripper
             t_cam2gripper: Translation vector from camera to gripper
         """
-<<<<<<< HEAD
         if eye_to_hand: # if there is eye to hand then :
-=======
-        
-    # def eye_to_hand_calib(target_poses, robot_poses):
-    def calibrate_eye_hand(self, target_poses,robot_poses,R_gripper2base, t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=True):
-        """
-    target_poses (target2cam) are provided as list of tuples of (rvec, tvec).
-    robot_poses (gripper2base) are provided as list of lists [x, y, z, w, p, r]
-    """
->>>>>>> 06edcfa193c4707b4fe895a5a0e4d9ebfd82d1b7
 
         # 1. Collect target poses
         R_target2cam = []
@@ -172,7 +162,6 @@ class CalibrationSystem: # defining the class
             R_target2cam.append(rvec)
             t_target2cam.append(tvec)
 
-<<<<<<< HEAD
             # 2. Collect robot poses
             R_gripper2base = [] 
             t_gripper2base = []
@@ -184,19 +173,6 @@ class CalibrationSystem: # defining the class
                 R = scipy.spatial.transform.Rotation.from_euler(
                     "XYZ", wpr, degrees=True
                 ).as_matrix()
-=======
-        # 2. Collect robot poses
-        R_gripper2base = []
-        t_gripper2base = []
-        for pose in robot_poses:
-            # gripper2base
-            t = pose[0:3]
-            # gripper2base
-            wpr = pose[3:]
-            R = scipy.spatial.transform.Rotation.from_euler(
-                "XYZ", wpr, degrees=True
-            ).as_matrix()
->>>>>>> 06edcfa193c4707b4fe895a5a0e4d9ebfd82d1b7
 
             R_gripper2base.append(R)
             t_gripper2base.append(t)
