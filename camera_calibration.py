@@ -138,23 +138,13 @@ class CalibrationSystem: # defining the class
 
 
 ########### EYE TO HAND CALIBRATION ##########################
-    def eye_to_hand_calib(self, R_gripper2base, target_poses, robot_poses,t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=True): # calibrate eye-hand
+    #def eye_to_hand_calib(self, R_gripper2base, target_poses, robot_poses,t_gripper2base, R_target2cam, t_target2cam, eye_to_hand=True): # calibrate eye-hand
+    def eye_to_hand_calib(target_poses, robot_poses,eye_to_hand=True):
         """
-        Perform eye-hand calibration using OpenCV
-        
-        Args:
-            R_gripper2base: List of rotation matrices
-            t_gripper2base: List of translation vectors
-            R_target2cam: List of rotation matrices
-            t_target2cam: List of translation vectors
-            eye_to_hand: Whether camera is eye-to-hand (fixed in world) or eye-in-hand (mounted on robot)
-        
-        Returns:
-            R_cam2gripper: Rotation matrix from camera to gripper
-            t_cam2gripper: Translation vector from camera to gripper
+        target_poses (target2cam) are provided as list of tuples of (rvec, tvec).
+        robot_poses (gripper2base) are provided as list of lists [x, y, z, w, p, r]
         """
-        if eye_to_hand: # if there is eye to hand then :
-
+        if eye_to_hand:
             # 1. Collect target poses
             R_target2cam = []
             t_target2cam = []
@@ -163,55 +153,66 @@ class CalibrationSystem: # defining the class
                 R_target2cam.append(rvec)
                 t_target2cam.append(tvec)
 
-                # 2. Collect robot poses
-                R_gripper2base = [-0.191,0.361,0.115] 
-                t_gripper2base = [81.53,24.99,95.788]
-                for pose in robot_poses:
-                    # gripper2base
-                    t = pose[0:3]
-                    # gripper2base
-                    wpr = pose[3:]
-                    R = scipy.spatial.transform.Rotation.from_euler(
-                        "XYZ", wpr, degrees=True
-                    ).as_matrix()
+            # 2. Collect robot poses
+            R_gripper2base = []
+            t_gripper2base = []
+            for pose in robot_poses:
+                # gripper2base
+                t = pose[0:3]
+                # gripper2base
+                wpr = pose[3:]
+                R = scipy.spatial.transform.Rotation.from_euler(
+                    "XYZ", wpr, degrees=True
+                ).as_matrix()
 
                 R_gripper2base.append(R)
                 t_gripper2base.append(t)
 
             # 3. Transform from gripper2base to base2gripper
-                R_base2gripper = []
-                t_base2gripper = []
-                for R_g2b, t_g2b in zip(R_gripper2base, t_gripper2base):
-                    R_b2g = R_g2b.T
-                    t_b2g = np.matmul(-R_b2g, t_g2b)
+            R_base2gripper = []
+            t_base2gripper = []
+            for R_g2b, t_g2b in zip(R_gripper2base, t_gripper2base):
+                R_b2g = -R_g2b.T
+                t_b2g = np.matmul(-R_b2g, t_g2b)
 
                 R_base2gripper.append(R_b2g)
                 t_base2gripper.append(t_b2g)
 
-                R_calib, t_calib = cv2.calibrateHandEye(
-                    R_gripper2base=R_target2cam,
-                    t_gripper2base=t_target2cam,
-                    R_target2cam=R_base2gripper,
-                    t_target2cam=t_base2gripper,
-                )
-                print("R_cam2base: \n", R_calib)
-                print("t_cam2base: \n", t_calib)
+            # 4. Call calibration
+            # R_calib, t_calib = cv2.calibrateHandEye(
+            #     R_gripper2base=R_base2gripper,
+            #     t_gripper2base=t_base2gripper,
+            #     R_target2cam=R_target2cam,
+            #     t_target2cam=t_target2cam,
+            # )
 
-                    # # Save calibration result
-                result = {
-                    "eye_to_hand": eye_to_hand,
-                    "calibration_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "rotation_matrix": R.tolist(),
-                    "translation_vector": t.tolist(),
-                    "num_poses_used": len(R_gripper2base)
-                }
+            R_calib, t_calib = cv2.calibrateHandEye(
+                R_gripper2base=R_target2cam,
+                t_gripper2base=t_target2cam,
+                R_target2cam=R_base2gripper,
+                t_target2cam=t_base2gripper,
+            )
+            
+            print("R_cam2base: \n", R_calib)
+            print("t_cam2base: \n", t_calib)
 
-                with open(os.path.join(self.save_dir, "calibration_result.json"), 'w') as f:
+            result = {
+                "eye_to_hand": eye_to_hand,
+                "calibration_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "rotation_matrix": R.tolist(),
+                "translation_vector": t.tolist(),
+                "num_poses_used": len(R_gripper2base)
+            }
+
+            with open(os.path.join(self.save_dir, "calibration_result.json"), 'w') as f:
                     json.dump(result, f, indent=4)
+                    
 
-                H_base_camera = np.r_[np.c_[R_calib, t_calib.flatten()], [[0, 0, 0, 1]]]
-                return H_base_camera
-                
+            H_base_camera = np.r_[np.c_[R, t_calib.flatten()], [[0, 0, 0, 1]]]
+            return H_base_camera
+
+
+        
 
         #     if eye_to_hand:
         #         # change coordinates from gripper2base to base2gripper
