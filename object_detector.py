@@ -55,7 +55,7 @@ class ObjectDetector:
             cx=self.intrinsics.ppx,
             cy=self.intrinsics.ppy
         )
-        #
+
         extcamcalib = np.eye(4)
         rot = R.from_quat(np.array([
             -0.022408657662149786, 
@@ -202,7 +202,7 @@ class ObjectDetector:
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
         cv2.putText(img, "Object Detected", (50, 50), cv2.FONT_HERSHEY_SIMPLEX,
                     1, (0, 255, 0), 2)
-        cv2.imshow("Detection", img)
+        cv2.imshow("Detection Window",img)
         cv2.waitKey(1)
 
     def get_last_color_image(self):
