@@ -3,6 +3,10 @@ from neurapy.robot import Robot
 from scipy.spatial.transform import Rotation as R # importing rotation module
 from object_detector import ObjectDetector # importing object_detector
 import time # importing time module
+import sys
+
+from controll_trafic_light import set_signal_light
+
 class RobotController: # defining class RobotController
     def __init__(self, robot_ip=None): # intializing the class
         self.robot = Robot(robot_ip) if robot_ip else Robot()
@@ -43,7 +47,9 @@ class RobotController: # defining class RobotController
         return T_final # returning the final transformation
  
     def move_to_pose(self, pose_xyzrpy, speed=0.06): # defining a function named move_to_pose
-        
+        # turn on correct signal light
+        set_signal_light(0,0,1)
+
         
         linear_property = {
             "speed": speed,
@@ -68,6 +74,22 @@ class RobotController: # defining class RobotController
  
         self.robot.move_linear_from_current_position(**linear_property) # move the robot to the given pose
         io_set = self.robot.set_tool_digital_outputs([1.0,0.0,0.0]) # setting the tool digital outputs
+
+        # check whether we actually grasp something
+        time.sleep(1)
+        io_get = self.robot.io("get", io_name = "TDI_0")
+        counter_signal_light = 0
+        
+        while io_get == 0:
+            time.sleep(0.5)
+            counter_signal_light += 1
+            io_get = self.robot.io("get", io_name = "TDI_0")
+            if counter_signal_light == 3:
+                set_signal_light(1,0,0)
+                self.robot.stop() # stopping the robot
+                io_set = self.robot.set_tool_digital_outputs([0.0,1.0,0.0]) # setting the tool digital outputs
+                sys.exit("no part grippt")            
+
         print(io_set)
         # time.sleep(1) # setting the sleep time
         # self.robot.move_joint("New_capture") # move the robot to New_capture position
@@ -353,4 +375,5 @@ class RobotController: # defining class RobotController
         print(io_set)
         self.robot.move_joint("New_capture") # setting the robot in New_capture position
         self.robot.stop() # stopping the robot
+        set_signal_light(0,1,0)
  

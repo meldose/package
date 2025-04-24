@@ -20,8 +20,10 @@ def matrix_to_pose(matrix):
 
 def main():
     r = Robot()
+    set_signal_light(0,1,0)
     r.set_mode("Automatic")
     r.move_joint("New_capture")
+
 
     calibration_matrix = r"/home/hrg/Documents/package_detection/cam_to_tcp_transform.npy"
     detector = ObjectDetector(calibration_matrix)
