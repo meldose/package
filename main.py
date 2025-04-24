@@ -20,7 +20,6 @@ def matrix_to_pose(matrix):
 
 def main():
     r = Robot()
-    set_signal_light(0,1,0)
     r.set_mode("Automatic")
     r.move_joint("New_capture")
 
