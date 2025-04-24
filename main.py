@@ -3,11 +3,14 @@ import cv2 # import cv2 module
 from neurapy.robot import Robot
 from object_detector import ObjectDetector # importing object_detector
 from robot_controller import RobotController # importing robot_controller
+from controll_trafic_light import set_signal_light
 
 def main():
     r = Robot()
+    set_signal_light(0,1,0)
     r.set_mode("Automatic")
     r.move_joint("New_capture")
+
 
     calibration_matrix = r"/home/hrg/Documents/package_detection/cam_to_tcp_transform.npy"
     detector = ObjectDetector(calibration_matrix)
