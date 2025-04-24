@@ -20,7 +20,7 @@ class Dimension(): # define a class named Dimension
             if camera_coords is not None: # if the camera coordinates are valid
                 points_3d.append(camera_coords[:3])  # Just take X, Y, Z
         
-        if len(points_3d)  4:
+        if len(points_3d):
             return None, None  # Not enough valid points
             
         # Calculate the dimensions using the 3D points
@@ -33,7 +33,7 @@ class Dimension(): # define a class named Dimension
         
         # Calculate width and height based on sorted points
         # This is simplified and may need adjustment for rotated objects
-        if len(sorted_points) = 4:
+        if len(sorted_points) == 4:
             # Calculate diagonal distances
             diag1 = self.calculate_distance_3d(sorted_points[0], sorted_points[3]) # getting the distance
             diag2 = self.calculate_distance_3d(sorted_points[1], sorted_points[2]) # getting the distance
@@ -52,6 +52,7 @@ class Dimension(): # define a class named Dimension
         _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cv2.imshow('Detected Binary', binary) # detecting the binary
+        cv2.waitKey(0)
         detected_objects = [] # creating an empty list
 
         for contour in contours: # checking each contour
@@ -108,4 +109,7 @@ class Dimension(): # define a class named Dimension
         return original, detected_objects # returning the original image and detected objects
 
     def release(self):
-        self.pipeline.stop() # stopping the pipeline
+        self.pipeline.stop() # stopping the pipeline#
+
+# dim=Dimension()
+# dim.process_frames()

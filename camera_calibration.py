@@ -154,8 +154,8 @@ class CalibrationSystem: # defining the class
                 t_target2cam.append(tvec)
 
             # 2. Collect robot poses
-            R_gripper2base = []
-            t_gripper2base = []
+            R_gripper2base = [-0.252,0.361,0.840]
+            t_gripper2base = [81.5,24.99,95.7]
             for pose in robot_poses:
                 # gripper2base
                 t = pose[0:3]

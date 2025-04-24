@@ -53,7 +53,7 @@ class RobotController: # defining class RobotController
             "rotation_acceleration": 5.0,
             "rotation_jerk": 100,
             "blending": False,
-            "target_pose": [pose_xyzrpy],
+            "target_pose": pose_xyzrpy,
             "current_joint_angles": self.robot.get_current_joint_angles(),
             "weaving": False,
             "pattern": 1,
@@ -69,10 +69,10 @@ class RobotController: # defining class RobotController
         self.robot.move_linear_from_current_position(**linear_property) # move the robot to the given pose
         io_set = self.robot.set_tool_digital_outputs([1.0,0.0,0.0]) # setting the tool digital outputs
         print(io_set)
-        time.sleep(1) # setting the sleep time
-        self.robot.move_joint("New_capture") # move the robot to New_capture position
-        self.robot.move_joint("P50") # move the robot to P50 position
-        self.robot.move_joint("P57") # move the robot to P57 position
+        # time.sleep(1) # setting the sleep time
+        # self.robot.move_joint("New_capture") # move the robot to New_capture position
+        # self.robot.move_joint("P50") # move the robot to P50 position
+        # self.robot.move_joint("P57") # move the robot to P57 position
         
     def check_gripper_status(self):
         """
