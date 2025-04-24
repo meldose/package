@@ -28,6 +28,3 @@ def set_signal_light(red, green, blue):
         io_set_= r.io("set", io_name = "DO_1", target_value = True)
     else:
         io_set_= r.io("set", io_name = "DO_1", target_value = False)
-
-#sys.exit("no trafic light")
-#set_signal_light(red="DO_0",green="DO_2",blue="DO_1")
