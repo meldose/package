@@ -82,7 +82,7 @@ class Dimension(): # define a class named Dimension
                     box_reshaped = box.reshape((-1, 1, 2)) # setitng the reshaped box
                     cv2.polylines(original, [box_reshaped], True, (0, 255, 255), 2)
                     continue
-                    
+                     
                 detected_objects.append({
                     'center_x': center_x,
                     'center_y': center_y,
