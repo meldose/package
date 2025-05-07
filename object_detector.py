@@ -29,14 +29,22 @@ class ObjectDetector:
         for _ in range(5):
             self.pipeline.wait_for_frames()
 
+<<<<<<< HEAD
     def get_detection(self, retry_count=5, delay_sec=0.5, visualize=True):
         """Attempts to detect an object. Retries if none found."""
         for attempt in range(retry_count):
             frames = self.pipeline.wait_for_frames()
             aligned_frames = self.align.process(frames)
+=======
+    def get_detection(self, retry_count=5, delay_sec=0.5, visualize=True): # creating function for getting the detection
+        
+        for attempt in range(retry_count): # couting the attempts in the range for retry_count
+            frames = self.pipeline.wait_for_frames() #setting the frames
+            aligned_frames = self.align.process(frames) # setting the aligned frames
+>>>>>>> 7ede459 (main.py)
 
-            color_frame = aligned_frames.get_color_frame()
-            depth_frame = aligned_frames.get_depth_frame()
+            color_frame = aligned_frames.get_color_frame() # setting the color frame
+            depth_frame = aligned_frames.get_depth_frame() # setting the depth frame
 
             if not color_frame or not depth_frame:
                 continue
@@ -73,6 +81,7 @@ class ObjectDetector:
         #
         bpd_ = BoxPoseDetector(intrinsics, extcamcalib)
 
+<<<<<<< HEAD
         # TODO hardcoded values to be passed as config
         points = np.array([
             [0.0, -0.25, 0.18],
@@ -84,6 +93,12 @@ class ObjectDetector:
             [0.0, -0.57, 0.50],
             [0.4, -0.57, 0.50],
         ])
+=======
+            for contour in contours:
+                area = cv2.contourArea(contour) # setting the contour area
+                if area < 2000 or area > 20000:
+                    continue
+>>>>>>> 7ede459 (main.py)
 
         pointso3d = o3d.utility.Vector3dVector(points)
 
