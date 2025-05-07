@@ -26,3 +26,8 @@ class CameraAPI:
         if self.cap:
             self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+            
+api=CameraAPI()
+# api.read_frame()
+api.open()
+# api.set_resolution(640,480)
