@@ -11,7 +11,7 @@ class ObjectDetector:
         # self.T_cam_to_tcp = np.load(calibration_matrix_path)
         # self.T_cam_to_tcp = np.eye(4)
         # rot = R.from_quat(np.array([-0.022408655662149786, 0.99410398563951585, -0.10598323033833017, -0.0047615936509700016]))
-        # rot_matrix = rot.as_matrix()  # 3x3
+        # rot_matrix = rot.as_matrix()  # rotation matrix
 
         # # Create 4x4 transformation matrix
         # self.T_cam_to_tcp[:3, :3] = rot_matrix
